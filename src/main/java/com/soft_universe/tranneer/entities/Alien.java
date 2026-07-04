@@ -132,8 +132,11 @@ public class Alien {
         return physicalStrength;
     }
 
+    public int getAge() {
+        return age;
+    }
 }
 
 
 
-//if i used lombork @NoArgConstructor,@AllArgConstructr,@Data for this entity
+// i also can used  @NoArgConstructor,@AllArgConstructr,@Data with lombork for this entity
