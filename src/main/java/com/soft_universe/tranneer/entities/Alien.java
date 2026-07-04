@@ -4,6 +4,10 @@ import com.soft_universe.tranneer.enums.AlienType;
 import com.soft_universe.tranneer.enums.IqLevel;
 import com.soft_universe.tranneer.enums.PhysicalStrength;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 @Entity
 @Table(name = "Alientbl")
 public class Alien {
@@ -11,29 +15,35 @@ public class Alien {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Min(value = 150, message = "iq should be at least 120")
     private int iq;
+    @NotBlank(message = "must have plannet")
     private String planet;
 
+    @NotNull(message = "type is required")
     @Enumerated(EnumType.STRING)
     private AlienType alienType;
 
     private String language;
+    @Min(value = 1,message = "need in Earth Human years(365Earthday=1)")
     private int age;
 
+    @NotNull(message = "IQ level required")
     @Enumerated(EnumType.STRING)
     private IqLevel iqLevel;
 
+    @NotNull(message = "Physical strength required")
     @Enumerated(EnumType.STRING)
     private PhysicalStrength physicalStrength;
 
     private boolean planningWar;
-    private boolean powers;
+    private boolean hasPowers;
 
     public Alien() {
 
     }
 
-    public Alien(long id, int iq, String planet, AlienType alienType, String language, int age, IqLevel iqLevel, PhysicalStrength physicalStrength, boolean planningWar, boolean powers) {
+    public Alien(long id, int iq, String planet, AlienType alienType, String language, int age, IqLevel iqLevel, PhysicalStrength physicalStrength, boolean planningWar, boolean hasPowers) {
         this.id = id;
         this.iq = iq;
         this.planet = planet;
@@ -43,7 +53,7 @@ public class Alien {
         this.iqLevel = iqLevel;
         this.physicalStrength = physicalStrength;
         this.planningWar = planningWar;
-        this.powers = powers;
+        this.hasPowers = hasPowers;
     }
 
     public void setId(long id) {
@@ -86,12 +96,12 @@ public class Alien {
         this.planningWar = planningWar;
     }
 
-    public boolean isPowers() {
-        return powers;
+    public boolean isHasPowers() {
+        return hasPowers;
     }
 
-    public void setPowers(boolean powers) {
-        this.powers = powers;
+    public void setHasPowers(boolean hasPowers) {
+        this.hasPowers = hasPowers;
     }
 
     public long getId() {
