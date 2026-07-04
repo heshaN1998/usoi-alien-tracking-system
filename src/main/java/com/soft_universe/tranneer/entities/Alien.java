@@ -13,7 +13,7 @@ import jakarta.validation.constraints.NotNull;
 public class Alien {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Min(value = 150, message = "iq should be at least 120")
     private int iq;
@@ -43,7 +43,7 @@ public class Alien {
 
     }
 
-    public Alien(long id, int iq, String planet, AlienType alienType, String language, int age, IqLevel iqLevel, PhysicalStrength physicalStrength, boolean planningWar, boolean hasPowers) {
+    public Alien(Long id, int iq, String planet, AlienType alienType, String language, int age, IqLevel iqLevel, PhysicalStrength physicalStrength, boolean planningWar, boolean hasPowers) {
         this.id = id;
         this.iq = iq;
         this.planet = planet;
@@ -56,7 +56,7 @@ public class Alien {
         this.hasPowers = hasPowers;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

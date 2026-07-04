@@ -18,7 +18,7 @@ public class AlienServiceIMPL implements AlienService{
     }
 
     @Override
-    public Alien getAlienById(long id) {
+    public Alien getAlienById(Long id) {
        return alienRepository.findById(id).orElseThrow(()->new RuntimeException("Alien not found"));
     }
 
@@ -28,14 +28,15 @@ public class AlienServiceIMPL implements AlienService{
     }
 
     @Override
-    public void deleteAlien(long id) {
+    public void deleteAlien(Long id) {
         alienRepository.deleteById(id);
     }
 
     @Override
-    public Alien updateAlien(long id, Alien updatingAlien) {
+    public Alien updateAlien(Long id, Alien updatingAlien) {
     Alien existing=alienRepository.findById(id).orElseThrow(()->new RuntimeException("alien doesnt exist in database"));
     existing.setIq(updatingAlien.getIq());
+    existing.setIqLevel(updatingAlien.getIqLevel());
     existing.setPlanet(updatingAlien.getPlanet());
     existing.setAlienType(updatingAlien.getAlienType());
     existing.setLanguage(updatingAlien.getLanguage());
