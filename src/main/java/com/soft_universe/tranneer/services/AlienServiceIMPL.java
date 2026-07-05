@@ -1,6 +1,7 @@
 package com.soft_universe.tranneer.services;
 
 import com.soft_universe.tranneer.entities.Alien;
+import com.soft_universe.tranneer.exceptions.AlienNotFoundException;
 import com.soft_universe.tranneer.repositories.AlienRepository;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class AlienServiceIMPL implements AlienService{
 
     @Override
     public Alien getAlienById(Long id) {
-       return alienRepository.findById(id).orElseThrow(()->new RuntimeException("Alien not found"));
+       return alienRepository.findById(id).orElseThrow(()->new AlienNotFoundException("Alien not found"));
     }
 
     @Override
@@ -34,7 +35,7 @@ public class AlienServiceIMPL implements AlienService{
 
     @Override
     public Alien updateAlien(Long id, Alien updatingAlien) {
-    Alien existing=alienRepository.findById(id).orElseThrow(()->new RuntimeException("alien doesnt exist in database"));
+    Alien existing=alienRepository.findById(id).orElseThrow(()->new AlienNotFoundException("alien doesnt exist in database"));
     existing.setIq(updatingAlien.getIq());
     existing.setIqLevel(updatingAlien.getIqLevel());
     existing.setPlanet(updatingAlien.getPlanet());
