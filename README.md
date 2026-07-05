@@ -3,6 +3,10 @@ TechStack: SpringBoot/postgreSQL/JPA/Java/LAYERED Architecture/maven/intelij IDE
 ####This project is designed for educational and portfolio purposes, focusing on backend development practices using Java and Spring Boot.####
 i am developing this for USOI(Universal Secretive Organized Investigation)
 
+This Spring Boot API is developed for a restricted environment and is intended for use by a small group of authorized users (approximately 7 users).
+All endpoints and data are accessible only to approved users within this controlled system.
+The project is not intended for public use or open distribution.
+
 Purpose:
 🤝The main Purpose of this project is to identify and classify dangerous alien entities within the universe and establish a controlled system to manage their         physical environment, behavioral patterns, and technological capabilities
 🤝planning long-term universal strategies aimed at reducing interstellar conflict, preventing war escalation, and maintaining universal peace.
