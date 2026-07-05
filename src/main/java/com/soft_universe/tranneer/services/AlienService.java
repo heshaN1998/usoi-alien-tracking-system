@@ -1,12 +1,14 @@
 package com.soft_universe.tranneer.services;
 
+import com.soft_universe.tranneer.dtos.RequestDTO;
+import com.soft_universe.tranneer.dtos.ResponseDTO;
 import com.soft_universe.tranneer.entities.Alien;
 
 import java.util.List;
 public interface AlienService {
-    Alien saveAlien(Alien alien);
-    Alien getAlienById(Long id);
-    List<Alien> getAllAliens();
+    ResponseDTO saveAlien(RequestDTO dto);
+    ResponseDTO getAlienById(Long id);
+    List<ResponseDTO> getAllAliens();
     void deleteAlien(Long id);
-    Alien updateAlien(Long id,Alien alien);
+    ResponseDTO updateAlien(Long id,RequestDTO dto);
 }

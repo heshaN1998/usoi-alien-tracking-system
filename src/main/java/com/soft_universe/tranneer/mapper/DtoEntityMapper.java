@@ -10,14 +10,14 @@ public class DtoEntityMapper {
     public static Alien dtoToEntity(RequestDTO dto){
         Alien alien=new Alien();
         alien.setIq(dto.getIq());
-        alien.setPlanet(dto.getPlannet());
+        alien.setPlanet(dto.getPlanet());
         alien.setAlienType(dto.getAlienType());
         alien.setLanguage(dto.getLanguage());
         alien.setAge(dto.getAge());
         alien.setIqLevel(dto.getIqLevel());
         alien.setPhysicalStrength(dto.getPhysicalStrength());
         alien.setPlanningWar(dto.isPlanningWar());
-        alien.setHasPowers(dto.isHasPower());
+        alien.setHasPowers(dto.isHasPowers());
         return alien;
     }
 
@@ -25,14 +25,14 @@ public class DtoEntityMapper {
         ResponseDTO dto=new ResponseDTO();
         dto.setId(alien.getId());
         dto.setIq(alien.getIq());;
-        dto.setPlannet(alien.getPlanet());
+        dto.setPlanet(alien.getPlanet());
         dto.setAlienType(alien.getAlienType());
         dto.setLanguage(alien.getLanguage());
         dto.setAge(alien.getAge());
         dto.setIqLevel(alien.getIqLevel());
         dto.setPhysicalStrength(alien.getPhysicalStrength());
         dto.setPlanningWar(alien.isPlanningWar());
-        dto.setHasPower(alien.isHasPowers());
+        dto.setHasPowers(alien.isHasPowers());
         return dto;
 
     }

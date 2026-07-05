@@ -1,7 +1,10 @@
 package com.soft_universe.tranneer.services;
 
+import com.soft_universe.tranneer.dtos.RequestDTO;
+import com.soft_universe.tranneer.dtos.ResponseDTO;
 import com.soft_universe.tranneer.entities.Alien;
 import com.soft_universe.tranneer.exceptions.AlienNotFoundException;
+import com.soft_universe.tranneer.mapper.DtoEntityMapper;
 import com.soft_universe.tranneer.repositories.AlienRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,18 +17,21 @@ public class AlienServiceIMPL implements AlienService{
         this.alienRepository=alienRepository;
     }
     @Override
-    public Alien saveAlien(Alien alien) {
-        return alienRepository.save(alien);
+    public ResponseDTO saveAlien(RequestDTO dto) {
+        Alien alien= DtoEntityMapper.dtoToEntity(dto);
+        Alien saved=alienRepository.save(alien);
+        return DtoEntityMapper.entityToDto(saved);
     }
 
     @Override
-    public Alien getAlienById(Long id) {
-       return alienRepository.findById(id).orElseThrow(()->new AlienNotFoundException("Alien not found"));
+    public ResponseDTO getAlienById(Long id) {
+       Alien alien= alienRepository.findById(id).orElseThrow(()->new AlienNotFoundException("Alien not found"));
+        return DtoEntityMapper.entityToDto(alien);
     }
 
     @Override
-    public List<Alien> getAllAliens() {
-        return alienRepository.findAll();
+    public List<ResponseDTO> getAllAliens() {
+        return alienRepository.findAll().stream().map(DtoEntityMapper::entityToDto).toList();
     }
 
     @Override
@@ -34,7 +40,7 @@ public class AlienServiceIMPL implements AlienService{
     }
 
     @Override
-    public Alien updateAlien(Long id, Alien updatingAlien) {
+    public ResponseDTO updateAlien(Long id, RequestDTO updatingAlien) {
     Alien existing=alienRepository.findById(id).orElseThrow(()->new AlienNotFoundException("alien doesnt exist in database"));
     existing.setIq(updatingAlien.getIq());
     existing.setIqLevel(updatingAlien.getIqLevel());
@@ -45,7 +51,7 @@ public class AlienServiceIMPL implements AlienService{
     existing.setPhysicalStrength(updatingAlien.getPhysicalStrength());
     existing.setPlanningWar(updatingAlien.isPlanningWar());
     existing.setHasPowers(updatingAlien.isHasPowers());
-
-    return alienRepository.save(existing);
+    Alien saved=alienRepository.save(existing);
+    return DtoEntityMapper.entityToDto(saved);
     }
 }
