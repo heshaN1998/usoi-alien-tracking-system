@@ -3,14 +3,15 @@ package com.soft_universe.tranneer.mapper;
 import com.soft_universe.tranneer.dtos.RequestDTO;
 import com.soft_universe.tranneer.dtos.ResponseDTO;
 import com.soft_universe.tranneer.entities.Alien;
+import com.soft_universe.tranneer.entities.Planet;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DtoEntityMapper {
-    public static Alien dtoToEntity(RequestDTO dto){
+    public static Alien dtoToEntity(RequestDTO dto, Planet planet){
         Alien alien=new Alien();
         alien.setIq(dto.getIq());
-        alien.setPlanet(dto.getPlanet());
+        alien.setPlanet(planet);
         alien.setAlienType(dto.getAlienType());
         alien.setLanguage(dto.getLanguage());
         alien.setAge(dto.getAge());
@@ -25,7 +26,7 @@ public class DtoEntityMapper {
         ResponseDTO dto=new ResponseDTO();
         dto.setId(alien.getId());
         dto.setIq(alien.getIq());;
-        dto.setPlanet(alien.getPlanet());
+        dto.setPlanet(dto.getPlanet());
         dto.setAlienType(alien.getAlienType());
         dto.setLanguage(alien.getLanguage());
         dto.setAge(alien.getAge());

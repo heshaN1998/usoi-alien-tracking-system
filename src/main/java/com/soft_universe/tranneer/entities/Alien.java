@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import com.soft_universe.tranneer.entities.Planet;
 
 @Entity
 @Table(name = "Alientbl")
@@ -17,8 +18,10 @@ public class Alien {
 
     @Min(value = 150, message = "iq should be at least 120")
     private int iq;
-    @NotBlank(message = "must have plannet")
-    private String planet;
+    //Adding Relation
+    @ManyToOne
+    @JoinColumn(name = "planetId")
+    private Planet planet;
 
     @NotNull(message = "type is required")
     @Enumerated(EnumType.STRING)
@@ -43,10 +46,10 @@ public class Alien {
 
     }
 
-    public Alien(Long id, int iq, String planet, AlienType alienType, String language, int age, IqLevel iqLevel, PhysicalStrength physicalStrength, boolean planningWar, boolean hasPowers) {
+    public Alien(Long id, int iq, Planet planet, AlienType alienType, String language, int age, IqLevel iqLevel, PhysicalStrength physicalStrength, boolean planningWar, boolean hasPowers) {
         this.id = id;
         this.iq = iq;
-        this.planet = planet;
+        this.planet=planet;
         this.alienType = alienType;
         this.language = language;
         this.age = age;
@@ -64,7 +67,7 @@ public class Alien {
         this.iq = iq;
     }
 
-    public void setPlanet(String planet) {
+    public void setPlanet(Planet planet) {
         this.planet = planet;
     }
 
@@ -112,7 +115,7 @@ public class Alien {
         return iq;
     }
 
-    public String getPlanet() {
+    public Planet getPlanet() {
         return planet;
     }
 
