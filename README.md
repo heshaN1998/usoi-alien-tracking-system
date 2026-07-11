@@ -1,9 +1,9 @@
-♾️not just a short-term project. It is a long-term personal engineering journey that I plan to continuously evolve throughout my career.♾️
+**♾️not just a short-term project. It is a long-term personal engineering journey that I plan to continuously evolve throughout my career.♾️**
 
 TechStack: Java/SpringBoot/postgreSQL/expect to improve security to high level
 
-####This project is designed for educational and portfolio purposes, focusing on backend development practices using Java and Spring Boot.####
-i am developing this for USOI(Universal Secretive Organized Investigation)
+*This project is designed for educational and portfolio purposes, focusing on backend development practices using Java and Spring Boot.
+i am developing this for USOI(Universal Secretive Organized Investigation)*
 
 This Spring Boot API is developed for a restricted environment and is intended for use by a small group of authorized users (approximately 7 users).
 All endpoints and data are accessible only to approved users within this controlled system.
