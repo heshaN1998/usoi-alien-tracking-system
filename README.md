@@ -1,4 +1,6 @@
-TechStack: SpringBoot/postgreSQL/JPA/Java/LAYERED Architecture/maven/intelij IDEA/expect to improve security to high level
+♾️not just a short-term project. It is a long-term personal engineering journey that I plan to continuously evolve throughout my career.♾️
+
+TechStack: Java/SpringBoot/postgreSQL/expect to improve security to high level
 
 ####This project is designed for educational and portfolio purposes, focusing on backend development practices using Java and Spring Boot.####
 i am developing this for USOI(Universal Secretive Organized Investigation)
