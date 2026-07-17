@@ -23,18 +23,22 @@ public class AlienController {
     public ResponseDTO createAlien(@Valid @RequestBody RequestDTO dto) {
         return alienService.saveAlien(dto);
     }
+
     @GetMapping("/{id}")
     public ResponseDTO getAlianById(@PathVariable Long id){
         return alienService.getAlienById(id);
     }
+
     @GetMapping
     public List<ResponseDTO> getAllAliens(){
         return alienService.getAllAliens();
     }
+
     @DeleteMapping("/{id}")
     public void deleteAlien(@PathVariable Long id){
         alienService.deleteAlien(id);
     }
+
     @PutMapping("/{id}")
     public ResponseDTO updateAlian( @PathVariable Long id, @Valid @RequestBody RequestDTO dto){
         return alienService.updateAlien(id,dto);
