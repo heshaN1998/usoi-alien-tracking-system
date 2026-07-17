@@ -21,7 +21,7 @@ public class PlanetController {
         return planetService.savePlanet(dto);
     }
 
-    @GetMapping("/{id")
+    @GetMapping("/{id}")
     public PlanetDTO getPlanetById(@PathVariable Long id){
         return planetService.getPlanetById(id);
     }
@@ -36,7 +36,7 @@ public class PlanetController {
         planetService.deletePlanet(id);
     }
 
-    @GetMapping("/{id}")
+    @PutMapping("/{id}")
     public PlanetDTO updatePlanet(@PathVariable Long id,@RequestBody PlanetDTO dto){
         return planetService.updatePlanet(id,dto);
     }

@@ -15,7 +15,7 @@ import lombok.Setter;
 public class ResponseDTO {
     private Long id;
     private int iq;
-    private String planet;
+    private Long planetId;
     private AlienType alienType;
     private String language;
     private int age;

@@ -14,7 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RequestDTO {
     private int iq;
-    private String planet;
+    private Long planetId;
     private AlienType alienType;
     private String language;
     private int age;

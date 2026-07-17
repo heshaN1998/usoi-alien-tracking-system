@@ -3,9 +3,12 @@ package com.soft_universe.tranneer.services;
 import com.soft_universe.tranneer.dtos.RequestDTO;
 import com.soft_universe.tranneer.dtos.ResponseDTO;
 import com.soft_universe.tranneer.entities.Alien;
+import com.soft_universe.tranneer.entities.Planet;
 import com.soft_universe.tranneer.exceptions.AlienNotFoundException;
+import com.soft_universe.tranneer.exceptions.PlanetNotFoundException;
 import com.soft_universe.tranneer.mapper.DtoEntityMapper;
 import com.soft_universe.tranneer.repositories.AlienRepository;
+import com.soft_universe.tranneer.repositories.PlanetRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,12 +16,16 @@ import java.util.List;
 public class AlienServiceIMPL implements AlienService{
 
     private final AlienRepository alienRepository;
-    public AlienServiceIMPL(AlienRepository alienRepository){
+    private final PlanetRepository planetRepository;
+    public AlienServiceIMPL(AlienRepository alienRepository,PlanetRepository planetRepository){
         this.alienRepository=alienRepository;
+        this.planetRepository=planetRepository;
     }
     @Override
     public ResponseDTO saveAlien(RequestDTO dto) {
-        Alien alien= DtoEntityMapper.dtoToEntity(dto);
+
+        Planet planet=planetRepository.findById(dto.getPlanetId()).orElseThrow(()->new PlanetNotFoundException("Planet Not Found"));
+        Alien alien= DtoEntityMapper.dtoToEntity(dto,planet);
         Alien saved=alienRepository.save(alien);
         return DtoEntityMapper.entityToDto(saved);
     }
@@ -42,9 +49,10 @@ public class AlienServiceIMPL implements AlienService{
     @Override
     public ResponseDTO updateAlien(Long id, RequestDTO updatingAlien) {
     Alien existing=alienRepository.findById(id).orElseThrow(()->new AlienNotFoundException("alien doesnt exist in database"));
+    Planet planet = planetRepository.findById(updatingAlien.getPlanetId()).orElseThrow(() -> new PlanetNotFoundException("Planet Not Found"));
     existing.setIq(updatingAlien.getIq());
+    existing.setPlanet(planet);
     existing.setIqLevel(updatingAlien.getIqLevel());
-    existing.setPlanet(updatingAlien.getPlanet());
     existing.setAlienType(updatingAlien.getAlienType());
     existing.setLanguage(updatingAlien.getLanguage());
     existing.setAge(updatingAlien.getAge());

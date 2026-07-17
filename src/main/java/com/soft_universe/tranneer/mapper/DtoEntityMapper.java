@@ -26,7 +26,9 @@ public class DtoEntityMapper {
         ResponseDTO dto=new ResponseDTO();
         dto.setId(alien.getId());
         dto.setIq(alien.getIq());;
-        dto.setPlanet(dto.getPlanet());
+        if(alien.getPlanet() != null){
+            dto.setPlanetId(alien.getPlanet().getPlanetId());
+        }
         dto.setAlienType(alien.getAlienType());
         dto.setLanguage(alien.getLanguage());
         dto.setAge(alien.getAge());
