@@ -11,7 +11,7 @@ import com.soft_universe.tranneer.entities.Planet;
 
 @Entity
 @Table(name = "Alientbl")
-public class Alien {
+public class Alien extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -135,9 +135,11 @@ public class Alien {
         return physicalStrength;
     }
 
+
     public int getAge() {
         return age;
     }
+
 }
 
 

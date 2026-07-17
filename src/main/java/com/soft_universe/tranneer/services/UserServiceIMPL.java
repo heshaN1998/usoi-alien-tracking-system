@@ -2,6 +2,7 @@ package com.soft_universe.tranneer.services;
 
 import com.soft_universe.tranneer.dtos.UserRequestDTO;
 import com.soft_universe.tranneer.dtos.UserResponseDTO;
+import com.soft_universe.tranneer.entities.Role;
 import com.soft_universe.tranneer.entities.User;
 import com.soft_universe.tranneer.exceptions.UserNotFoundException;
 import com.soft_universe.tranneer.mapper.DtoEntityMapper;
@@ -76,6 +77,13 @@ public class UserServiceIMPL implements UserService{
     @Override
     public void deleteUser(Long id) {
     User user=userRepository.findById(id).orElseThrow(()->new UserNotFoundException("user not found"));
+    if (user.getRole()== Role.OVERSEER){
+        long overseer=userRepository.countByRole(Role.OVERSEER);
+
+        if(overseer<=1){
+            throw new RuntimeException("Cannot delete the OVERSEER");
+        }
+    }
     userRepository.delete(user);
     }
 }

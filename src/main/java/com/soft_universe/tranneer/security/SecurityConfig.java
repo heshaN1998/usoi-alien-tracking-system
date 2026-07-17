@@ -25,6 +25,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CustomeUserDetailsService userDetailsService;
+    private final CustomAuthenticationEntryPoints authenticationEntryPoints;
+    private final CustomAccessDeniedHandler accessDeniedHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -39,6 +41,10 @@ public class SecurityConfig {
                         .hasRole("OVERSEER")
                         .anyRequest()
                         .authenticated()
+                )
+                .exceptionHandling(exception->exception
+                        .authenticationEntryPoint(authenticationEntryPoints)
+                        .accessDeniedHandler(accessDeniedHandler)
                 )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

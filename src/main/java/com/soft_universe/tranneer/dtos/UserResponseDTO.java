@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,4 +17,8 @@ private Long id;
 private String userName;
 private Role role;
 
+private String createdBy;
+private String updatedBy;
+private LocalDateTime createdAt;
+private LocalDateTime updatedAt;
 }
