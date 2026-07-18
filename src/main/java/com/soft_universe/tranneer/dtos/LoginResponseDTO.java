@@ -10,9 +10,10 @@ import java.time.LocalDateTime;
 public class LoginResponseDTO {
     private  String accessToken;
     private String role;
+    private String refreshToken;
 
-    private String createdBy;
-    private String updatedBy;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+//    private String createdBy;
+//    private String updatedBy;
+//    private LocalDateTime createdAt;
+//    private LocalDateTime updatedAt;
 }
