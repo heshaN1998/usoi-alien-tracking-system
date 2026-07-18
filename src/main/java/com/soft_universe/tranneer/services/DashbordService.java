@@ -8,6 +8,6 @@ public interface DashbordService {
     DashbordSummeryDTO getSummery();
     DashbordStatisticsDTO getStatistics();
     List<DashbordChartDTO> getChart();
-    AlienStatisticDTO getAllStatistics();
+    AlienStatisticDTO getAlienStatistics();
     List<PlanetStatisticDTO> getPlanetStatistics();
 }

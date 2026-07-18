@@ -13,5 +13,5 @@ public interface AlienRepository extends JpaRepository<Alien,Long> {
     long countByIqLevel(IqLevel iqLevel);
 
     @Query("SELECT AVG(a.iq) FROM Alien a")
-    Double averageIq();
+    Double findAverageIq();
 }
