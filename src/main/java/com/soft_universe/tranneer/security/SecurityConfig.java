@@ -36,7 +36,7 @@ public class SecurityConfig {
                 )
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login","/api/auth/refresh").permitAll()
+                        .requestMatchers("/api/auth/login","/api/auth/logout","/api/auth/refresh").permitAll()
                         .requestMatchers("/api/overseer/**")
                         .hasRole("OVERSEER")
                         .anyRequest()

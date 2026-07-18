@@ -42,12 +42,13 @@ public class AuthServiceIMPL implements AuthService {
         User user = userRepository.findByUserName(request.getUserName()).orElseThrow();
         RefreshToken refreshToken=refreshTokenService.createToken(user);
         return new LoginResponseDTO(accessToken,
-                refreshToken.getToken(),
                 user.getRole().name(),
+                refreshToken.getToken(),
                 user.getCreatedBy(),
                 user.getUpdatedBy(),
                 user.getCreatedAt(),
                 user.getUpdatedAt());
+
     }
 
     @Override
@@ -69,8 +70,8 @@ public class AuthServiceIMPL implements AuthService {
         String newAccessToken = jwtService.generateToken(userDetails);
         return new LoginResponseDTO(
                 newAccessToken,
-                refreshToken.getToken(),
                 user.getRole().name(),
+                refreshToken.getToken(),
                 user.getCreatedBy(),
                 user.getUpdatedBy(),
                 user.getCreatedAt(),

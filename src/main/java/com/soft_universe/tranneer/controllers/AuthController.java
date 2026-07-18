@@ -20,6 +20,7 @@ public class AuthController {
     @PostMapping("/login")
     public LoginResponseDTO login(@RequestBody LoginRequestDTO request) {
         return authService.login(request);
+
     }
 
     @PostMapping("/refresh")

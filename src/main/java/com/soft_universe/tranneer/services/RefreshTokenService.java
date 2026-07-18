@@ -15,6 +15,7 @@ public class RefreshTokenService {
 private final RefreshTokenRepository tokenRepository;
 
     public RefreshToken createToken(User user){
+
         RefreshToken token = new RefreshToken();
         token.setUser(user);
         token.setToken(UUID.randomUUID().toString());
