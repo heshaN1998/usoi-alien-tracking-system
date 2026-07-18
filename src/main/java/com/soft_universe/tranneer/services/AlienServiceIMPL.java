@@ -44,6 +44,7 @@ public class AlienServiceIMPL implements AlienService{
     @Override
     public void deleteAlien(Long id) {
         alienRepository.deleteById(id);
+        System.out.println("Deleted success");
     }
 
     @Override

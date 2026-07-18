@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api01/planets")
+@RequestMapping("/api01/planets")
 @CrossOrigin
 public class PlanetController {
     private final PlanetService planetService;

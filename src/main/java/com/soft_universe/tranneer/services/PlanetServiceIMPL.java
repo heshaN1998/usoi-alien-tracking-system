@@ -57,5 +57,6 @@ public class PlanetServiceIMPL implements PlanetService{
     public void deletePlanet(Long id) {
     Planet planet=planetRepository.findById(id).orElseThrow(()->new PlanetNotFoundException("Planet not found"));
     planetRepository.delete(planet);
+        System.out.println("Deleted success");
     }
 }

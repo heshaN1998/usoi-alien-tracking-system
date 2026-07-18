@@ -91,5 +91,6 @@ public class UserServiceIMPL implements UserService{
         }
     }
     userRepository.delete(user);
+        System.out.println("Deleted success");
     }
 }

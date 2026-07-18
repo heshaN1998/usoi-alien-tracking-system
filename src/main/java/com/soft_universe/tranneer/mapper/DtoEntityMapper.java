@@ -25,7 +25,7 @@ public class DtoEntityMapper {
     public static ResponseDTO entityToDto(Alien alien){
         ResponseDTO dto=new ResponseDTO();
         dto.setId(alien.getId());
-        dto.setIq(alien.getIq());;
+        dto.setIq(alien.getIq());
         if(alien.getPlanet() != null){
             dto.setPlanetId(alien.getPlanet().getPlanetId());
         }
@@ -36,6 +36,10 @@ public class DtoEntityMapper {
         dto.setPhysicalStrength(alien.getPhysicalStrength());
         dto.setPlanningWar(alien.isPlanningWar());
         dto.setHasPowers(alien.isHasPowers());
+        dto.setCreatedBy(alien.getCreatedBy());
+        dto.setUpdatedBy(alien.getUpdatedBy());
+        dto.setCreatedAt(alien.getCreatedAt());
+        dto.setUpdatedAt(alien.getUpdatedAt());
         return dto;
 
     }
