@@ -25,7 +25,13 @@ public class UserServiceIMPL implements UserService{
 
     }
     private UserResponseDTO mapToResponse(User user){
-        return new UserResponseDTO(user.getId(),user.getUserName(),user.getRole());
+        return new UserResponseDTO(user.getId(),
+                user.getUserName(),
+                user.getRole(),
+                user.getCreatedBy(),
+                user.getUpdatedBy(),
+                user.getCreatedAt(),
+                user.getUpdatedAt());
     }
 
 

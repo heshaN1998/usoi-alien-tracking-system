@@ -11,8 +11,8 @@ import java.util.Optional;
 public class AuditorAwareIMPL  implements AuditorAware<String>{
     @Override
     public Optional<String> getCurrentAuditor() {
-        return Optional.ofNullable(SecurityUtil.getCurrentUsername()
-        );
+        System.out.println("AUDITOR CALLED");
+        return Optional.of(SecurityUtil.getCurrentUsername());
 
     }
 }
