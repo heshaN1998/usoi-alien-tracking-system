@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TranneerApplication {
+public class AlienNeutrilizerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TranneerApplication.class, args);
+		SpringApplication.run(AlienNeutrilizerApplication.class, args);
 	}
 
 }

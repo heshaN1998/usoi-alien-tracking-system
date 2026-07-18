@@ -12,8 +12,8 @@ public class LoginResponseDTO {
     private String role;
     private String refreshToken;
 
-//    private String createdBy;
-//    private String updatedBy;
-//    private LocalDateTime createdAt;
-//    private LocalDateTime updatedAt;
+    private String createdBy;
+    private String updatedBy;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

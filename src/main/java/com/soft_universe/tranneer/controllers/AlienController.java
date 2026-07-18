@@ -5,7 +5,6 @@ import com.soft_universe.tranneer.dtos.ResponseDTO;
 import com.soft_universe.tranneer.entities.Alien;
 import com.soft_universe.tranneer.services.AlienService;
 import jakarta.validation.Valid;
-import jdk.jfr.ContentType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

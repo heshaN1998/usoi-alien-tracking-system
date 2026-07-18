@@ -22,6 +22,7 @@ public class AuthServiceIMPL implements AuthService {
     private final RefreshTokenService refreshTokenService;
     private final RefreshTokenRepository refreshTokenRepository;
 
+
     public AuthServiceIMPL(AuthenticationManager authenticationManager, UserRepository userRepository, JwtService jwtService, RefreshTokenService refreshTokenService, RefreshTokenRepository refreshTokenRepository) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
@@ -38,9 +39,15 @@ public class AuthServiceIMPL implements AuthService {
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String accessToken=jwtService.generateToken(userDetails);
-        User user = userRepository.findUserName(request.getUserName()).orElseThrow();
+        User user = userRepository.findByUserName(request.getUserName()).orElseThrow();
         RefreshToken refreshToken=refreshTokenService.createToken(user);
-        return new LoginResponseDTO(accessToken, refreshToken.getToken(),user.getRole().name());
+        return new LoginResponseDTO(accessToken,
+                refreshToken.getToken(),
+                user.getRole().name(),
+                user.getCreatedBy(),
+                user.getUpdatedBy(),
+                user.getCreatedAt(),
+                user.getUpdatedAt());
     }
 
     @Override
@@ -63,7 +70,11 @@ public class AuthServiceIMPL implements AuthService {
         return new LoginResponseDTO(
                 newAccessToken,
                 refreshToken.getToken(),
-                user.getRole().name()
+                user.getRole().name(),
+                user.getCreatedBy(),
+                user.getUpdatedBy(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
         );
     }
 

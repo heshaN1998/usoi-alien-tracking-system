@@ -1,13 +1,11 @@
 package com.soft_universe.tranneer.services;
 
 import com.soft_universe.tranneer.dtos.DasbordDTOs.*;
-import com.soft_universe.tranneer.dtos.PlanetDTO;
 import com.soft_universe.tranneer.entities.Planet;
 import com.soft_universe.tranneer.enums.IqLevel;
 import com.soft_universe.tranneer.repositories.AlienRepository;
 import com.soft_universe.tranneer.repositories.PlanetRepository;
 import com.soft_universe.tranneer.repositories.UserRepository;
-import com.sun.jdi.PrimitiveValue;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,8 +42,8 @@ public class DashbordServiceIMPL implements DashbordService{
         return new DashbordStatisticsDTO(
                 alienRepository.countByHasPowersTrue(),
                 alienRepository.countByPlanningWarTrue(),
-                alienRepository.countByHasPowersTrue(),
-                alienRepository.countByPlanningWarTrue()
+                planetRepository.countByHasWarFalse(),
+                planetRepository.countByHasWarTrue()
         );
     }
 

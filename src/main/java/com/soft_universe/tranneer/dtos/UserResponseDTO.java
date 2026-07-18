@@ -21,4 +21,11 @@ private String createdBy;
 private String updatedBy;
 private LocalDateTime createdAt;
 private LocalDateTime updatedAt;
+
+    public UserResponseDTO(Long id, String username, Role role) {
+        this.id = id;
+        this.userName = username;
+        this.role = role;
+    }
+
 }

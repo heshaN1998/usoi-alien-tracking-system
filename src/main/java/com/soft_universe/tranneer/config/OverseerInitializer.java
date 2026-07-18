@@ -4,6 +4,7 @@ import com.soft_universe.tranneer.entities.Role;
 import com.soft_universe.tranneer.entities.User;
 import com.soft_universe.tranneer.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -11,9 +12,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class OverseerInitializer {
 
     //overseer means admin who have only main authorized one
+    @Bean
     CommandLineRunner createOverseer(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            if (userRepository.findUserName("admin").isEmpty()) {
+            if (userRepository.findByUserName("overseer").isEmpty()) {
                 User overseer = User.builder()
                         .userName("overseer")
                         .password(passwordEncoder.encode("PoweredAdmin18"))
