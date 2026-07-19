@@ -1,4 +1,4 @@
-package com.soft_universe.tranneer.ai;
+package com.soft_universe.tranneer.ai.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

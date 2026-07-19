@@ -1,10 +1,12 @@
 package com.soft_universe.tranneer.ai;
 
+import com.soft_universe.tranneer.ai.dtos.AIResponseDTO;
+import com.soft_universe.tranneer.ai.dtos.PlanetAIInsightDTO;
+import com.soft_universe.tranneer.ai.service.AiService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api01/ai")
@@ -19,4 +21,10 @@ public class AiController {
     public AIResponseDTO dashbordInsights(){
         return aiService.generateDashbordInsights();
     }
+
+    @GetMapping("/planet/{id}")
+    public PlanetAIInsightDTO analyzePlanet(@PathVariable Long id){
+        return aiService.analyzePlanet(id);
+    }
+
 }

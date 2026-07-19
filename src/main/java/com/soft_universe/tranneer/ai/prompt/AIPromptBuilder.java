@@ -1,4 +1,4 @@
-package com.soft_universe.tranneer.ai;
+package com.soft_universe.tranneer.ai.prompt;
 
 public class AIPromptBuilder {
     public static String dashboardInsightPrompt(
