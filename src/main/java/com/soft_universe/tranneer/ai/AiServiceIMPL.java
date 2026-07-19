@@ -11,21 +11,21 @@ import java.util.List;
 
 
 @Service
-public class AiServiceIMPL implements AiService{
+public class AiServiceIMPL implements AiService {
     private final ChatClient chatClient;
     private final AlienRepository alienRepository;
     private final PlanetRepository planetRepository;
     private final UserRepository userRepository;
 
-    public AiServiceIMPL(ChatClient.Builder builder,AlienRepository alienRepository,PlanetRepository planetRepository,UserRepository userRepository){
-        this.chatClient=builder.build();
-        this.alienRepository=alienRepository;
-        this.planetRepository=planetRepository;
-        this.userRepository=userRepository;
+    public AiServiceIMPL(ChatClient.Builder builder, AlienRepository alienRepository, PlanetRepository planetRepository, UserRepository userRepository) {
+        this.chatClient = builder.build();
+        this.alienRepository = alienRepository;
+        this.planetRepository = planetRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
-    public List<AiInsightDTO> generateDashbordInsights() {
+    public AIResponseDTO generateDashbordInsights() {
         long totalAliens = alienRepository.count();
         long totalPlanet = planetRepository.count();
         long totalUser = userRepository.count();
@@ -34,46 +34,7 @@ public class AiServiceIMPL implements AiService{
         if (avgIq == null) {
             avgIq = 0.0;
         }
-        String prompt = """
-                You are an AI Universe Analyst.
-                
-                Analyze this universe data:
-                Total Aliens:
-                %d
-                
-                Total Planets:
-                %d
-                
-                Total Users:
-                %d
-                
-                Average Alien IQ:
-                %.2f
-                
-                Generate 3 important insights.
-                
-                Each insight must contain:
-                
-                title
-                description
-                recommendation
-                
-                Return ONLY JSON array.
-                
-                Example:
-                
-                [
-                  {
-                    "title":"Universe Status",
-                    "description":"...",
-                    "recommendation":"..."
-                  }
-                ]
-                
-                """.formatted(totalAliens, totalPlanet, totalUser, avgIq);
-
-//      AIInsightDTO response = chatClient.prompt(prompt).call().entity(AIInsightDTO.class);
-        AiInsightDTO response=chatClient.prompt(prompt).call().entity(new ParameterizedTypeReference<AiInsightDTO>() {});
-        return List.of(response);
+        String prompt = AIPromptBuilder.dashboardInsightPrompt(totalAliens, totalPlanet, totalUser, avgIq);
+        return chatClient.prompt(prompt).call().entity(AIResponseDTO.class);
     }
 }

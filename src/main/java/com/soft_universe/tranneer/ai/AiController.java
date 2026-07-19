@@ -14,9 +14,9 @@ public class AiController {
         this.aiService=aiService;
     }
 
-    
+
     @GetMapping("/dashbord-insight")
-    public List<AiInsightDTO> dashbordInsights(){
+    public AIResponseDTO dashbordInsights(){
         return aiService.generateDashbordInsights();
     }
 }
