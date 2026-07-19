@@ -1,9 +1,12 @@
 package com.soft_universe.tranneer.ai.service;
 
+import com.soft_universe.tranneer.ai.dtos.AlienAIInsightDTO;
 import com.soft_universe.tranneer.ai.dtos.PlanetAIInsightDTO;
 import com.soft_universe.tranneer.ai.prompt.AIPromptBuilder;
 import com.soft_universe.tranneer.ai.dtos.AIResponseDTO;
+import com.soft_universe.tranneer.ai.prompt.AlienAIPromptBuilder;
 import com.soft_universe.tranneer.ai.prompt.PlanetAIPromptBuilder;
+import com.soft_universe.tranneer.entities.Alien;
 import com.soft_universe.tranneer.entities.Planet;
 import com.soft_universe.tranneer.repositories.AlienRepository;
 import com.soft_universe.tranneer.repositories.PlanetRepository;
@@ -19,13 +22,15 @@ public class AiServiceIMPL implements AiService {
     private final PlanetRepository planetRepository;
     private final UserRepository userRepository;
     private final PlanetAIDataService planetAIDataService;
+    private final AlienAIDataService alienAIDataService;
 
-    public AiServiceIMPL(ChatClient.Builder builder, AlienRepository alienRepository, PlanetRepository planetRepository, UserRepository userRepository,PlanetAIDataService planetAIDataService) {
+    public AiServiceIMPL(ChatClient.Builder builder, AlienRepository alienRepository, PlanetRepository planetRepository, UserRepository userRepository,PlanetAIDataService planetAIDataService,AlienAIDataService alienAIDataService) {
         this.chatClient = builder.build();
         this.alienRepository = alienRepository;
         this.planetRepository = planetRepository;
         this.userRepository = userRepository;
         this.planetAIDataService=planetAIDataService;
+        this.alienAIDataService=alienAIDataService;
     }
 
     @Override
@@ -92,5 +97,65 @@ Aliens Planning War:
         String prompt =PlanetAIPromptBuilder.build(data);
         return chatClient.prompt(prompt).call().entity(PlanetAIInsightDTO.class);
 
+    }
+
+    @Override
+    public AlienAIInsightDTO analyzeAlien(Long alienId) {
+        Alien alien =
+                alienAIDataService.getAlien(alienId);
+
+        String data = """
+
+Alien ID:
+%s
+
+IQ:
+%d
+
+IQ Level:
+%s
+
+Alien Type:
+%s
+
+Physical Strength:
+%s
+
+Age:
+%d
+
+Language:
+%s
+
+Has Powers:
+%s
+
+Planning War:
+%s
+
+Planet:
+%s
+
+Planet Type:
+%s
+
+"""
+                .formatted(
+                        alien.getId(),
+                        alien.getIq(),
+                        alien.getIqLevel(),
+                        alien.getAlienType(),
+                        alien.getPhysicalStrength(),
+                        alien.getAge(),
+                        alien.getLanguage(),
+                        alien.isHasPowers(),
+                        alien.isPlanningWar(),
+                        alien.getPlanet()!=null? alien.getPlanet().getGalaxy(): "Unknown",
+                        alien.getPlanet()!=null? alien.getPlanet().getPlanetType(): "Unknown"
+                );
+
+        String prompt = AlienAIPromptBuilder.build(data);
+
+        return chatClient.prompt(prompt).call().entity(AlienAIInsightDTO.class);
     }
 }
