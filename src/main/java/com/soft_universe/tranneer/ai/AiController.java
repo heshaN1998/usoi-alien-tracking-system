@@ -3,6 +3,7 @@ package com.soft_universe.tranneer.ai;
 import com.soft_universe.tranneer.ai.dtos.AIResponseDTO;
 import com.soft_universe.tranneer.ai.dtos.AlienAIInsightDTO;
 import com.soft_universe.tranneer.ai.dtos.PlanetAIInsightDTO;
+import com.soft_universe.tranneer.ai.dtos.UniverseRiskDTO;
 import com.soft_universe.tranneer.ai.service.AiService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,11 @@ public class AiController {
     @GetMapping("/alien/{id}")
     public AlienAIInsightDTO analyzeAlien(@PathVariable Long id){
         return aiService.analyzeAlien(id);
+    }
+
+    @GetMapping("/universe/risk")
+    public UniverseRiskDTO universeRiskDTO(){
+        return aiService.predictUniverseRisk();
     }
 
 }

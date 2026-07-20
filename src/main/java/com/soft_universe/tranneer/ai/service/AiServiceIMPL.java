@@ -2,10 +2,12 @@ package com.soft_universe.tranneer.ai.service;
 
 import com.soft_universe.tranneer.ai.dtos.AlienAIInsightDTO;
 import com.soft_universe.tranneer.ai.dtos.PlanetAIInsightDTO;
+import com.soft_universe.tranneer.ai.dtos.UniverseRiskDTO;
 import com.soft_universe.tranneer.ai.prompt.AIPromptBuilder;
 import com.soft_universe.tranneer.ai.dtos.AIResponseDTO;
 import com.soft_universe.tranneer.ai.prompt.AlienAIPromptBuilder;
 import com.soft_universe.tranneer.ai.prompt.PlanetAIPromptBuilder;
+import com.soft_universe.tranneer.ai.prompt.UniverseRiskPromptBuilder;
 import com.soft_universe.tranneer.entities.Alien;
 import com.soft_universe.tranneer.entities.Planet;
 import com.soft_universe.tranneer.repositories.AlienRepository;
@@ -23,14 +25,17 @@ public class AiServiceIMPL implements AiService {
     private final UserRepository userRepository;
     private final PlanetAIDataService planetAIDataService;
     private final AlienAIDataService alienAIDataService;
+    private final UniversalAIDataService universalAIDataService;
 
-    public AiServiceIMPL(ChatClient.Builder builder, AlienRepository alienRepository, PlanetRepository planetRepository, UserRepository userRepository,PlanetAIDataService planetAIDataService,AlienAIDataService alienAIDataService) {
+    public AiServiceIMPL(ChatClient.Builder builder, AlienRepository alienRepository, PlanetRepository planetRepository, UserRepository userRepository,PlanetAIDataService planetAIDataService,AlienAIDataService alienAIDataService,UniversalAIDataService universalAIDataService) {
         this.chatClient = builder.build();
         this.alienRepository = alienRepository;
         this.planetRepository = planetRepository;
         this.userRepository = userRepository;
         this.planetAIDataService=planetAIDataService;
         this.alienAIDataService=alienAIDataService;
+        this.universalAIDataService=universalAIDataService;
+
     }
 
     @Override
@@ -157,5 +162,13 @@ Planet Type:
         String prompt = AlienAIPromptBuilder.build(data);
 
         return chatClient.prompt(prompt).call().entity(AlienAIInsightDTO.class);
+    }
+
+    @Override
+    public UniverseRiskDTO predictUniverseRisk() {
+        String data=universalAIDataService.collectiotUniverseData();
+        String prompt= UniverseRiskPromptBuilder.build(data);
+
+        return chatClient.prompt(prompt).call().entity(UniverseRiskDTO.class);
     }
 }
