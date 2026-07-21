@@ -52,6 +52,6 @@ public class PlanetKnowledgeService {
                                 planet.isHasWar(),
                                 planet.getRelativeGravity()
                         );
-        knowledgeIndexer.addDocument(content, "PLANE", planet.getPlanetId());
+        knowledgeIndexer.addDocument(content, "PLANET", planet.getPlanetId());
     }
 }

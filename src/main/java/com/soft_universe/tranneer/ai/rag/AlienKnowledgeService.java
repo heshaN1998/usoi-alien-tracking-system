@@ -35,7 +35,7 @@ public class AlienKnowledgeService {
                 %s
                 """
                         .formatted(
-                                alien.getIq(),
+                                alien.getId(),
                                 alien.getIq(),
                                 alien.getPlanet().getPlanetId(),
                                 alien.isHasPowers(),

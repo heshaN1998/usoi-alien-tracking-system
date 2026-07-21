@@ -6,10 +6,7 @@ import com.soft_universe.tranneer.ai.dtos.ChatResponseDTO;
 import com.soft_universe.tranneer.ai.service.AIChatHistoryService;
 import com.soft_universe.tranneer.ai.service.AIChatService;
 import com.soft_universe.tranneer.services.CurrentUserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,6 +28,7 @@ public class AIChatController {
         return aiChatService.ask(request.getQuestion());
     }
 
+    @GetMapping("/history")
     public List<AIChatHistoryDTO> history(){
         String userName=currentUserService.getCurrentUsername();
         return chatHistoryService.getHistory(userName);

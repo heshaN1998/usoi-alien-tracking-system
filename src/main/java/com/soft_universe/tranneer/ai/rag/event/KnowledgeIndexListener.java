@@ -24,6 +24,7 @@ public class KnowledgeIndexListener {
         public void handle(KnowledgeIndexEvent event) {
         if(event.getOperation()==IndexOperation.DELETE){
             knowledgeIndexer.deleteDocument(event.getType(),event.getId());
+            return;
         }
         switch (event.getType()){
             case "ALIEN" -> alienKnowledgeService.indexAlien(event.getId());
