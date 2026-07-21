@@ -11,11 +11,14 @@ import com.soft_universe.tranneer.ai.tools.PredictTools;
 import com.soft_universe.tranneer.ai.tools.ReasearchTools;
 import com.soft_universe.tranneer.ai.tools.SecureTools;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.document.Document;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.stereotype.Service;
+import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.ai.chat.messages.AssistantMessage;
+import org.springframework.ai.chat.messages.Message;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 public class AICommanderServiceIMPL implements AICommanderService {
@@ -27,6 +30,7 @@ public class AICommanderServiceIMPL implements AICommanderService {
     private final ReasearchTools reasearchTools;
     private final PredictTools predictTools;
     private final CommanderKnowledgeService knowledgeService;
+    private final ChatMemory chatMemory;
 
     public AICommanderServiceIMPL(ChatClient chatClient,
                                   KnowledgeRetriever retriever,
@@ -34,7 +38,8 @@ public class AICommanderServiceIMPL implements AICommanderService {
                                   SecureTools secureTools,
                                   ReasearchTools reasearchTools,
                                   PredictTools predictTools,
-                                  CommanderKnowledgeService knowledgeService
+                                  CommanderKnowledgeService knowledgeService,
+                                  ChatMemory chatMemory
     ) {
         this.chatClient = chatClient;
         this.retriever = retriever;
@@ -43,12 +48,16 @@ public class AICommanderServiceIMPL implements AICommanderService {
         this.predictTools = predictTools;
         this.reasearchTools = reasearchTools;
         this.knowledgeService = knowledgeService;
+        this.chatMemory=chatMemory;
 
     }
 
 
     @Override
-    public CommanderResponseDTO execute(String command) {
+    public CommanderResponseDTO execute(String userId,String command) {
+        chatMemory.add(userId,new UserMessage(command));
+        List<Message> historyMessage=chatMemory.get(userId,20);
+        String history=historyMessage.stream().map(Message::getText).reduce("",(a,b)->a+ "\n"+ b );
         String knowledge = knowledgeService.retrieve(command);
 //        List<Document> docs = retriever.search(command);
 
@@ -56,18 +65,23 @@ public class AICommanderServiceIMPL implements AICommanderService {
 //        String prompt = promptBuilder.build(command, context);
         String answer = chatClient.prompt()
                 .system("""
-                        
                         You are AlienBase AI Commander.
                         
-                        You can:
-                        - call tools
-                        - analyze knowledge
-                        - make decisions
+                        Remember previous conversations.
                         
-                        Always use tools when required.
+                        You have access to:
                         
+                        - Conversation Memory
+                        - Retrieved Knowledge (RAG)
+                        - AI Tools
+                        
+                        Use tools whenever they help answer the user's request.
                         """)
+
                 .user("""
+                        Conversation History:
+                        
+                         %s
                         
                         User Command:
                         
@@ -78,13 +92,13 @@ public class AICommanderServiceIMPL implements AICommanderService {
                         
                         %s
                         
-                        """.formatted(
-                        command,
-                        knowledge
-                ))
+                        """.formatted(history,command, knowledge)
+                )
                 .tools(secureTools, reasearchTools, predictTools)
                 .call().
                 content();
+
+        chatMemory.add(userId,new AssistantMessage(answer));
 
 //        return new CommanderResponseDTO("ANALYSIS COMPLETE", "EXICUTE", answer);
         return new CommanderResponseDTO("COMMANDER DECISION", "RAG ANALYSIS WITH TOOLS", answer);

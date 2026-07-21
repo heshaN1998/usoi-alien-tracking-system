@@ -20,7 +20,7 @@ public class AICommanderController {
 
     @PostMapping
     public ResponseEntity<CommanderResponseDTO> command(@RequestBody CommanderRequestDTO request){
-        CommanderResponseDTO response=service.execute(request.getCommand());
+        CommanderResponseDTO response=service.execute(request.getUserId(),request.getCommand());
         return ResponseEntity.ok(response);
     }
 }

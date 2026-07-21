@@ -7,4 +7,5 @@ import lombok.Setter;
 @Setter
 public class CommanderRequestDTO {
     private String command;
+    private String userId;
 }
