@@ -1,5 +1,6 @@
 package com.soft_universe.tranneer.services;
 
+import com.soft_universe.tranneer.ai.rag.event.KnowledgeEventPublisher;
 import com.soft_universe.tranneer.dtos.PlanetDTO;
 import com.soft_universe.tranneer.entities.Planet;
 import com.soft_universe.tranneer.exceptions.PlanetNotFoundException;
@@ -12,9 +13,11 @@ import java.util.List;
 @Service
 public class PlanetServiceIMPL implements PlanetService{
     private final PlanetRepository planetRepository;
+    private final KnowledgeEventPublisher knowledgeEventPublisher;
 
-    public PlanetServiceIMPL(PlanetRepository planetRepository){
+    public PlanetServiceIMPL(PlanetRepository planetRepository,KnowledgeEventPublisher knowledgeEventPublisher){
         this.planetRepository=planetRepository;
+        this.knowledgeEventPublisher=knowledgeEventPublisher;
     }
 
 
@@ -22,6 +25,7 @@ public class PlanetServiceIMPL implements PlanetService{
     public PlanetDTO savePlanet(PlanetDTO dto) {
         Planet planet= PlanetMapper.dtoToEntity(dto);
         Planet savedPlanet=planetRepository.save(planet);
+        knowledgeEventPublisher.publish("PLANET",savedPlanet.getPlanetId());
         return PlanetMapper.entityToDto(savedPlanet);
     }
 
@@ -50,6 +54,7 @@ public class PlanetServiceIMPL implements PlanetService{
         exitingPlanet.setHasWar(dto.isHasWar());
 
         Planet updatedPlanet=planetRepository.save(exitingPlanet);
+        knowledgeEventPublisher.publish("PLANET",updatedPlanet.getPlanetId());
         return PlanetMapper.entityToDto(updatedPlanet);
     }
 
