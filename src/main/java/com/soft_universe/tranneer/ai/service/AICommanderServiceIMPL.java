@@ -4,6 +4,7 @@ import com.soft_universe.tranneer.ai.agents.predictAgent.PredictionAgent;
 import com.soft_universe.tranneer.ai.agents.researchAgent.ResearchAgent;
 import com.soft_universe.tranneer.ai.agents.securityAgent.SecurityAgent;
 import com.soft_universe.tranneer.ai.dtos.CommanderResponseDTO;
+import com.soft_universe.tranneer.ai.memory.PersistentMemoryService;
 import com.soft_universe.tranneer.ai.prompt.CommanderPromptBuilder;
 import com.soft_universe.tranneer.ai.rag.CommanderKnowledgeService;
 import com.soft_universe.tranneer.ai.rag.KnowledgeRetriever;
@@ -31,6 +32,7 @@ public class AICommanderServiceIMPL implements AICommanderService {
     private final PredictTools predictTools;
     private final CommanderKnowledgeService knowledgeService;
     private final ChatMemory chatMemory;
+    private final PersistentMemoryService memoryService;
 
     public AICommanderServiceIMPL(ChatClient chatClient,
                                   KnowledgeRetriever retriever,
@@ -39,7 +41,8 @@ public class AICommanderServiceIMPL implements AICommanderService {
                                   ReasearchTools reasearchTools,
                                   PredictTools predictTools,
                                   CommanderKnowledgeService knowledgeService,
-                                  ChatMemory chatMemory
+                                  ChatMemory chatMemory,
+                                  PersistentMemoryService memoryService
     ) {
         this.chatClient = chatClient;
         this.retriever = retriever;
@@ -48,42 +51,23 @@ public class AICommanderServiceIMPL implements AICommanderService {
         this.predictTools = predictTools;
         this.reasearchTools = reasearchTools;
         this.knowledgeService = knowledgeService;
-        this.chatMemory=chatMemory;
+        this.chatMemory = chatMemory;
+        this.memoryService = memoryService;
 
     }
 
 
     @Override
-    public CommanderResponseDTO execute(String userId,String command) {
-        chatMemory.add(userId,new UserMessage(command));
-        List<Message> historyMessage=chatMemory.get(userId,20);
-        String history=historyMessage.stream().map(Message::getText).reduce("",(a,b)->a+ "\n"+ b );
+    public CommanderResponseDTO execute(String userId, String command) {
+        String history = memoryService.getHistory(userId);
         String knowledge = knowledgeService.retrieve(command);
-//        List<Document> docs = retriever.search(command);
+        memoryService.save(userId, "USER", command);
 
-//        String context = docs.stream().map(Document::getText).collect(Collectors.joining("\n"));
-//        String prompt = promptBuilder.build(command, context);
-        String answer = chatClient.prompt()
-                .system("""
-                        You are AlienBase AI Commander.
-                        
-                        Remember previous conversations.
-                        
-                        You have access to:
-                        
-                        - Conversation Memory
-                        - Retrieved Knowledge (RAG)
-                        - AI Tools
-                        
-                        Use tools whenever they help answer the user's request.
-                        """)
-
+        String response = chatClient
+                .prompt()
                 .user("""
-                        Conversation History:
                         
-                         %s
-                        
-                        User Command:
+                        Previous Conversation:
                         
                         %s
                         
@@ -92,15 +76,21 @@ public class AICommanderServiceIMPL implements AICommanderService {
                         
                         %s
                         
-                        """.formatted(history,command, knowledge)
-                )
+                        
+                        Request:
+                        
+                        %s
+                        
+                        """.formatted(history, knowledge, command))
                 .tools(secureTools, reasearchTools, predictTools)
-                .call().
-                content();
+                .call()
+                .content();
+        memoryService.save(
+                userId,
+                "AI",
+                response
+        );
 
-        chatMemory.add(userId,new AssistantMessage(answer));
-
-//        return new CommanderResponseDTO("ANALYSIS COMPLETE", "EXICUTE", answer);
-        return new CommanderResponseDTO("COMMANDER DECISION", "RAG ANALYSIS WITH TOOLS", answer);
+        return new CommanderResponseDTO("COMMANDER DECISION", "RAG ANALYSIS WITH TOOLS WITH MEMORY", response);
     }
 }
