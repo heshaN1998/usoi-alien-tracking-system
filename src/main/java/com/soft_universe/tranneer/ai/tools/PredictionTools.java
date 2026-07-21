@@ -3,9 +3,10 @@ package com.soft_universe.tranneer.ai.tools;
 
 import com.soft_universe.tranneer.repositories.*;
 import org.springframework.ai.tool.annotation.Tool;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-
+@Profile("personal")
 @Component
 public class PredictionTools {
     private final AlienRepository alienRepository;

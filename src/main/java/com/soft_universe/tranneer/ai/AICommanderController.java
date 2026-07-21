@@ -3,12 +3,11 @@ package com.soft_universe.tranneer.ai;
 import com.soft_universe.tranneer.ai.dtos.CommanderRequestDTO;
 import com.soft_universe.tranneer.ai.dtos.CommanderResponseDTO;
 import com.soft_universe.tranneer.ai.service.AICommanderService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.swing.plaf.PanelUI;
 
 @RestController
 @RequestMapping("/api/ai/commander")
@@ -20,7 +19,8 @@ public class AICommanderController {
     }
 
     @PostMapping
-    public CommanderResponseDTO command(@RequestBody CommanderRequestDTO request){
-        return service.execute(request.getCommand());
+    public ResponseEntity<CommanderResponseDTO> command(@RequestBody CommanderRequestDTO request){
+        CommanderResponseDTO response=service.execute(request.getCommand());
+        return ResponseEntity.ok(response);
     }
 }

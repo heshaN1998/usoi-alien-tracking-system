@@ -4,8 +4,10 @@ import com.soft_universe.tranneer.entities.Alien;
 import com.soft_universe.tranneer.enums.PhysicalStrength;
 import com.soft_universe.tranneer.repositories.AlienRepository;
 import org.springframework.ai.tool.annotation.Tool;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+@Profile("personal")
 @Component
 public class AlienTools {
     private final AlienRepository alienRepository;

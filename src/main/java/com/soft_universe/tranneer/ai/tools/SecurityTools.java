@@ -2,16 +2,17 @@ package com.soft_universe.tranneer.ai.tools;
 
 import com.soft_universe.tranneer.repositories.AlienRepository;
 import com.soft_universe.tranneer.repositories.PlanetRepository;
-import org.checkerframework.checker.units.qual.N;
 import org.springframework.ai.tool.annotation.Tool;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+@Profile("personal")
 @Component
-public class SecurityTool {
+public class SecurityTools {
     private final AlienRepository alienRepository;
     private final PlanetRepository planetRepository;
 
-    public SecurityTool(AlienRepository alienRepository, PlanetRepository planetRepository) {
+    public SecurityTools(AlienRepository alienRepository, PlanetRepository planetRepository) {
         this.alienRepository = alienRepository;
         this.planetRepository = planetRepository;
     }

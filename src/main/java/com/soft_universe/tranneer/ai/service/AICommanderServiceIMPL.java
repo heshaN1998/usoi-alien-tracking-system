@@ -5,8 +5,11 @@ import com.soft_universe.tranneer.ai.agents.researchAgent.ResearchAgent;
 import com.soft_universe.tranneer.ai.agents.securityAgent.SecurityAgent;
 import com.soft_universe.tranneer.ai.dtos.CommanderResponseDTO;
 import com.soft_universe.tranneer.ai.prompt.CommanderPromptBuilder;
+import com.soft_universe.tranneer.ai.rag.CommanderKnowledgeService;
 import com.soft_universe.tranneer.ai.rag.KnowledgeRetriever;
-import com.soft_universe.tranneer.repositories.PlanetRepository;
+import com.soft_universe.tranneer.ai.tools.PredictTools;
+import com.soft_universe.tranneer.ai.tools.ReasearchTools;
+import com.soft_universe.tranneer.ai.tools.SecureTools;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.document.Document;
 import org.springframework.stereotype.Service;
@@ -20,51 +23,70 @@ public class AICommanderServiceIMPL implements AICommanderService {
     private final KnowledgeRetriever retriever;
     private final CommanderPromptBuilder promptBuilder;
 
-    //injecting my tripple agents
-    private final SecurityAgent securityAgent;
-    private final ResearchAgent researchAgent;
-    private final PredictionAgent predictionAgent;
+    private final SecureTools secureTools;
+    private final ReasearchTools reasearchTools;
+    private final PredictTools predictTools;
+    private final CommanderKnowledgeService knowledgeService;
+
     public AICommanderServiceIMPL(ChatClient chatClient,
                                   KnowledgeRetriever retriever,
                                   CommanderPromptBuilder promptBuilder,
-                                  SecurityAgent securityAgent,
-                                  PredictionAgent predictionAgent,
-                                  ResearchAgent researchAgent
+                                  SecureTools secureTools,
+                                  ReasearchTools reasearchTools,
+                                  PredictTools predictTools,
+                                  CommanderKnowledgeService knowledgeService
     ) {
         this.chatClient = chatClient;
         this.retriever = retriever;
         this.promptBuilder = promptBuilder;
-        this.securityAgent=securityAgent;
-        this.predictionAgent=predictionAgent;
-        this.researchAgent=researchAgent;
+        this.secureTools = secureTools;
+        this.predictTools = predictTools;
+        this.reasearchTools = reasearchTools;
+        this.knowledgeService = knowledgeService;
 
     }
 
 
     @Override
     public CommanderResponseDTO execute(String command) {
+        String knowledge = knowledgeService.retrieve(command);
+//        List<Document> docs = retriever.search(command);
 
-        String lowerCommand=command.toLowerCase();
-        //for agents rout
-        if (lowerCommand.contains("security")){
-            return new CommanderResponseDTO("SECURITY ANALYSIS","CALL SECURITY AGENT",securityAgent.analyzeUniverse().toString());
-        }
+//        String context = docs.stream().map(Document::getText).collect(Collectors.joining("\n"));
+//        String prompt = promptBuilder.build(command, context);
+        String answer = chatClient.prompt()
+                .system("""
+                        
+                        You are AlienBase AI Commander.
+                        
+                        You can:
+                        - call tools
+                        - analyze knowledge
+                        - make decisions
+                        
+                        Always use tools when required.
+                        
+                        """)
+                .user("""
+                        
+                        User Command:
+                        
+                        %s
+                        
+                        
+                        Knowledge:
+                        
+                        %s
+                        
+                        """.formatted(
+                        command,
+                        knowledge
+                ))
+                .tools(secureTools, reasearchTools, predictTools)
+                .call().
+                content();
 
-        if (lowerCommand.contains("research")){
-            return new CommanderResponseDTO("RESEARCH ANALYSIS","CALL RESEARCH AGENT",researchAgent.investigateUniverse().toString());
-        }
-
-        if (lowerCommand.contains("prediction")){
-            return new CommanderResponseDTO("PREDICTION ANALYSIS","CALL PREDICTION AGENT",predictionAgent.predictWar().toString());
-        }
-
-        //default AI reasoning[RAG]
-        List<Document> docs = retriever.search(command);
-
-        String context = docs.stream().map(Document::getText).collect(Collectors.joining());
-        String prompt = promptBuilder.build(command, context);
-        String answer = chatClient.prompt().user(prompt).call().content();
-
-        return new CommanderResponseDTO("ANALYSIS COMPLETE", "EXICUTE", answer);
+//        return new CommanderResponseDTO("ANALYSIS COMPLETE", "EXICUTE", answer);
+        return new CommanderResponseDTO("COMMANDER DECISION", "RAG ANALYSIS WITH TOOLS", answer);
     }
 }
