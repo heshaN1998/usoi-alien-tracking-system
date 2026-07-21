@@ -1,5 +1,6 @@
 package com.soft_universe.tranneer.services;
 
+import com.soft_universe.tranneer.ai.rag.event.IndexOperation;
 import com.soft_universe.tranneer.ai.rag.event.KnowledgeEventPublisher;
 import com.soft_universe.tranneer.dtos.PlanetDTO;
 import com.soft_universe.tranneer.entities.Planet;
@@ -25,7 +26,7 @@ public class PlanetServiceIMPL implements PlanetService{
     public PlanetDTO savePlanet(PlanetDTO dto) {
         Planet planet= PlanetMapper.dtoToEntity(dto);
         Planet savedPlanet=planetRepository.save(planet);
-        knowledgeEventPublisher.publish("PLANET",savedPlanet.getPlanetId());
+        knowledgeEventPublisher.publish("PLANET",savedPlanet.getPlanetId(), IndexOperation.CREATE);
         return PlanetMapper.entityToDto(savedPlanet);
     }
 
@@ -54,7 +55,7 @@ public class PlanetServiceIMPL implements PlanetService{
         exitingPlanet.setHasWar(dto.isHasWar());
 
         Planet updatedPlanet=planetRepository.save(exitingPlanet);
-        knowledgeEventPublisher.publish("PLANET",updatedPlanet.getPlanetId());
+        knowledgeEventPublisher.publish("PLANET",updatedPlanet.getPlanetId(),IndexOperation.UPDATE);
         return PlanetMapper.entityToDto(updatedPlanet);
     }
 
@@ -62,6 +63,7 @@ public class PlanetServiceIMPL implements PlanetService{
     public void deletePlanet(Long id) {
     Planet planet=planetRepository.findById(id).orElseThrow(()->new PlanetNotFoundException("Planet not found"));
     planetRepository.delete(planet);
+    knowledgeEventPublisher.publish("PLANET",id,IndexOperation.DELETE);
         System.out.println("Deleted success");
     }
 }

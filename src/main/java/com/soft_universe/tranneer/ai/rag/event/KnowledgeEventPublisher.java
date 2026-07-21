@@ -11,8 +11,8 @@ public class KnowledgeEventPublisher {
         this.publisher=publisher;
     }
 
-    public void publish(String type,Long id){
-        publisher.publishEvent(new KnowledgeIndexEvent(type,id));
+    public void publish(String type,Long id,IndexOperation operation){
+        publisher.publishEvent(new KnowledgeIndexEvent(type,id,operation));
     }
 
 }

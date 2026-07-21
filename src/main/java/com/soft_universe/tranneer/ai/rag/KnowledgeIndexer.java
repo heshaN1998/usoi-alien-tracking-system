@@ -19,4 +19,10 @@ public class KnowledgeIndexer {
         Document document = new Document(text, Map.of("type", type, "id", id));
         vectorStore.add(List.of(document));
     }
+
+    public void deleteDocument(String type,Long id){
+        vectorStore.delete("type = '" +type+ "' AND id = '" +id+ "'");
+
+
+    }
 }
