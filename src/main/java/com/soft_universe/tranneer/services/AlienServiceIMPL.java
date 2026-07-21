@@ -1,5 +1,6 @@
 package com.soft_universe.tranneer.services;
 
+import com.soft_universe.tranneer.ai.rag.event.KnowledgeEventPublisher;
 import com.soft_universe.tranneer.dtos.RequestDTO;
 import com.soft_universe.tranneer.dtos.ResponseDTO;
 import com.soft_universe.tranneer.entities.Alien;
@@ -17,9 +18,12 @@ public class AlienServiceIMPL implements AlienService{
 
     private final AlienRepository alienRepository;
     private final PlanetRepository planetRepository;
-    public AlienServiceIMPL(AlienRepository alienRepository,PlanetRepository planetRepository){
+    private final KnowledgeEventPublisher publisher;
+    public AlienServiceIMPL(AlienRepository alienRepository,PlanetRepository planetRepository,KnowledgeEventPublisher publisher){
         this.alienRepository=alienRepository;
         this.planetRepository=planetRepository;
+        this.publisher=publisher;
+
     }
     @Override
     public ResponseDTO saveAlien(RequestDTO dto) {
@@ -27,6 +31,7 @@ public class AlienServiceIMPL implements AlienService{
         Planet planet=planetRepository.findById(dto.getPlanetId()).orElseThrow(()->new PlanetNotFoundException("Planet Not Found"));
         Alien alien= DtoEntityMapper.dtoToEntity(dto,planet);
         Alien saved=alienRepository.save(alien);
+        publisher.publish("ALIEN",saved.getId());
         return DtoEntityMapper.entityToDto(saved);
     }
 
@@ -61,6 +66,7 @@ public class AlienServiceIMPL implements AlienService{
     existing.setPlanningWar(updatingAlien.isPlanningWar());
     existing.setHasPowers(updatingAlien.isHasPowers());
     Alien saved=alienRepository.save(existing);
+    publisher.publish("ALIEN",saved.getId());
     return DtoEntityMapper.entityToDto(saved);
     }
 }
