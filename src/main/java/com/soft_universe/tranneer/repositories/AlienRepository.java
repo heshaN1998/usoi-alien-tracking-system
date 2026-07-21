@@ -20,4 +20,5 @@ public interface AlienRepository extends JpaRepository<Alien,Long> {
     Double findAverageIq();
 
     Optional<Alien> findFirstByPhysicalStrength(PhysicalStrength physicalStrength);
+    List<Alien> findByPlanningWarTrue();
 }
