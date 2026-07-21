@@ -1,7 +1,5 @@
-package com.soft_universe.tranneer.ai.service;
+package com.soft_universe.tranneer.ai.agents.securityAgent;
 
-import com.soft_universe.tranneer.ai.dtos.SecurityAnalysisDTO;
-import com.soft_universe.tranneer.ai.prompt.SecurityPromptBuilder;
 import com.soft_universe.tranneer.entities.Alien;
 import com.soft_universe.tranneer.entities.Planet;
 import com.soft_universe.tranneer.repositories.AlienRepository;

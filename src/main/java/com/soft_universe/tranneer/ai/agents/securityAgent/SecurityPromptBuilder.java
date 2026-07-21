@@ -1,4 +1,4 @@
-package com.soft_universe.tranneer.ai.prompt;
+package com.soft_universe.tranneer.ai.agents.securityAgent;
 
 import org.springframework.stereotype.Component;
 

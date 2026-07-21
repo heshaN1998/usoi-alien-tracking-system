@@ -21,4 +21,5 @@ public interface AlienRepository extends JpaRepository<Alien,Long> {
 
     Optional<Alien> findFirstByPhysicalStrength(PhysicalStrength physicalStrength);
     List<Alien> findByPlanningWarTrue();
+    List<Alien> findByHasPowersTrue();
 }

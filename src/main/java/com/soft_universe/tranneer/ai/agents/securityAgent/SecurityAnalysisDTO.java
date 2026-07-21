@@ -1,4 +1,4 @@
-package com.soft_universe.tranneer.ai.dtos;
+package com.soft_universe.tranneer.ai.agents.securityAgent;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,4 @@
-package com.soft_universe.tranneer.ai.service;
-
-import com.soft_universe.tranneer.ai.dtos.SecurityAnalysisDTO;
+package com.soft_universe.tranneer.ai.agents.securityAgent;
 
 public interface SecurityAgent {
     SecurityAnalysisDTO analyzeUniverse();
