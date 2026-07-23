@@ -22,7 +22,7 @@ public class PersistentMemoryService {
     }
 
     public String getHistory(String conversationId){
-        List<ChatMemoryEntity> memories=repository.findByConversationInOrderByCreatedAtAsc(conversationId);
+        List<ChatMemoryEntity> memories=repository.findByConversationIdOrderByCreatedAtAsc(conversationId);
 
         StringBuilder history=new StringBuilder();
         memories.forEach(m->history.append(m.getRole()).append(":").append(m.getContent()).append("\n"));

@@ -6,7 +6,7 @@ import com.soft_universe.tranneer.repositories.AlienRepository;
 import com.soft_universe.tranneer.repositories.PlanetRepository;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class PredictionAgentIMPL implements PredictionAgent {
@@ -14,23 +14,23 @@ public class PredictionAgentIMPL implements PredictionAgent {
     private final PredictPromptBuilder promptBuilder;
     private final AlienRepository alienRepository;
     private final PlanetRepository planetRepository;
-    private final ObjectMapper objectMapper;
 
-    public PredictionAgentIMPL(ChatClient chatClient, PredictPromptBuilder promptBuilder, AlienRepository alienRepository, PlanetRepository planetRepository, ObjectMapper objectMapper) {
+
+    public PredictionAgentIMPL(ChatClient chatClient, PredictPromptBuilder promptBuilder, AlienRepository alienRepository, PlanetRepository planetRepository) {
         this.chatClient = chatClient;
         this.alienRepository = alienRepository;
         this.planetRepository = planetRepository;
         this.promptBuilder = promptBuilder;
-        this.objectMapper = objectMapper;
+
     }
 
     private PredictionDTO predict(String data, String predictionType) {
         try {
-            String response = chatClient.prompt()
+            return chatClient.prompt()
                     .user(promptBuilder.build(data, predictionType))
                     .call()
-                    .content();
-            return objectMapper.readValue(response, PredictionDTO.class);
+                    .entity(PredictionDTO.class);
+
         } catch (Exception e) {
             throw new RuntimeException("Prediction failed", e);
         }
@@ -42,10 +42,10 @@ public class PredictionAgentIMPL implements PredictionAgent {
         String data = """
                 Universe War Statistics
                 
-                Aliens Planning War: %s
-                Planets At War: %s
-                Total Aliens: %s
-                Total Planets: %s
+                Aliens Planning War: %d
+                Planets At War: %d
+                Total Aliens: %d
+                Total Planets: %d
                 """
                 .formatted(
                         alienRepository.countByPlanningWarTrue(),
@@ -62,11 +62,11 @@ public class PredictionAgentIMPL implements PredictionAgent {
         String data = """
                 Planet War Prediction
                 
-                Planet: %s
+                Planet Id: %d
                 Galaxy: %s
                 Has War: %s
-                Average IQ: %s
-                Alien Count: %s
+                Average IQ: %.2f
+                Alien Count: %d
                 """
                 .formatted(
                         planet.getPlanetId(),
@@ -84,11 +84,11 @@ public class PredictionAgentIMPL implements PredictionAgent {
         String data = """
                 Alien Threat Prediction
                 
-                Name: %s
-                IQ: %s
+                Alien Id: %d
+                IQ: %d
                 Powers: %s
                 Planning War: %s
-                Planet: %s
+                Planet: %d
                 """
                 .formatted(
                         alien.getId(),

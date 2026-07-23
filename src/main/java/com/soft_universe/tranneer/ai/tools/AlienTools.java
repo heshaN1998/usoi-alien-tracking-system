@@ -7,7 +7,7 @@ import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-@Profile("personal")
+
 @Component
 public class AlienTools {
     private final AlienRepository alienRepository;

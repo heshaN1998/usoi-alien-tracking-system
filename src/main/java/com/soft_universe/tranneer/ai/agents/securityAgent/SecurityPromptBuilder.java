@@ -42,6 +42,11 @@ public class SecurityPromptBuilder {
                 "reason":"",
                 "recommendation":""
                 }
+                
+                Rules:
+                - Do not use markdown.
+                - Do not explain.
+                - Return JSON only.
                 """
                 .formatted(data);
     }

@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class VectorStoreConfig {
 
     @Bean
-    private PgVectorStore vectorStore(JdbcTemplate jdbcTemplate, EmbeddingModel embeddingModel) {
-        return PgVectorStore.builder(jdbcTemplate, embeddingModel).dimensions(1536).build();
+    public PgVectorStore vectorStore(JdbcTemplate jdbcTemplate, EmbeddingModel embeddingModel) {
+        return PgVectorStore.builder(jdbcTemplate, embeddingModel).dimensions(768).build();
     }
 }

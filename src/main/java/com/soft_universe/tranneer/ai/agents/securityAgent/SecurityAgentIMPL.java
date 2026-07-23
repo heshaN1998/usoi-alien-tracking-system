@@ -14,21 +14,22 @@ public class SecurityAgentIMPL implements SecurityAgent {
     private final SecurityPromptBuilder promptBuilder;
     private final AlienRepository alienRepository;
     private final PlanetRepository planetRepository;
-    private final ObjectMapper objectMapper;
 
-    public SecurityAgentIMPL(ChatClient chatClient, SecurityPromptBuilder promptBuilder, AlienRepository alienRepository, PlanetRepository planetRepository, ObjectMapper objectMapper) {
+
+    public SecurityAgentIMPL(ChatClient chatClient, SecurityPromptBuilder promptBuilder, AlienRepository alienRepository, PlanetRepository planetRepository) {
         this.chatClient = chatClient;
         this.promptBuilder = promptBuilder;
         this.planetRepository = planetRepository;
         this.alienRepository = alienRepository;
-        this.objectMapper = objectMapper;
+
     }
 
     private SecurityAnalysisDTO analyze(String data) {
-        String response = chatClient.prompt().user(promptBuilder.build(data)).call().content();
 
         try {
-            return objectMapper.readValue(response, SecurityAnalysisDTO.class);
+            return chatClient.prompt()
+                    .user(promptBuilder.build(data))
+                    .call().entity(SecurityAnalysisDTO.class);
         } catch (Exception e) {
             throw new RuntimeException("AI response parsing failed", e);
         }
@@ -38,15 +39,20 @@ public class SecurityAgentIMPL implements SecurityAgent {
     @Override
     public SecurityAnalysisDTO analyzeUniverse() {
         String data = """
-                Aliens Planning War:
+                Universe Security Status
                 
-                %s
+                                Aliens Planning War: %s
                 
-                Planets At War:
+                                Planets At War: %s
                 
-                %s
+                                Total Hostile Aliens: %d
+                
+                                Total Planets: %d
                 """
-                .formatted(alienRepository.findByPlanningWarTrue(), planetRepository.findByHasWarTrue());
+                .formatted(alienRepository.findByPlanningWarTrue(),
+                        planetRepository.findByHasWarTrue(),
+                        alienRepository.countByPlanningWarTrue(),
+                        alienRepository.count());
         return analyze(data);
 
     }
@@ -58,10 +64,10 @@ public class SecurityAgentIMPL implements SecurityAgent {
                 Alien Security Analysis
                 
                 Id:
-                %s
+                %d
                 
                 IQ:
-                %s
+                %d
                 
                 Powers:
                 %s
@@ -89,20 +95,20 @@ public class SecurityAgentIMPL implements SecurityAgent {
         String data = """
                 Planet Security Analysis
                 
-                Name:
-                %s
+                Planet Id:
+                %d
                 
                 Galaxy:
                 %s
                 
                 Average IQ:
-                %s
+                %.2f
                 
                 War Status:
                 %s
                 
                 Alien Population:
-                %s
+                %d
                 """
                 .formatted(
                         planet.getPlanetId(),

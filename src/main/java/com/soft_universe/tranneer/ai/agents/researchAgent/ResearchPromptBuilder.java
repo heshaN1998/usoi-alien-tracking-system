@@ -6,22 +6,29 @@ import org.springframework.stereotype.Component;
 public class ResearchPromptBuilder {
     public String build(String data) {
         return """
-                You are an AI Research Agent for AlienBase.
+                You are AlienBase Research AI.
                 
-                        Your job is to investigate the provided information.
+                Analyze the following information.
                 
-                        Produce a JSON response with:
-                        {
-                          "subject":"",
-                          "findings":"",
-                          "evidence":"",
-                          "conclusion":"",
-                          "recommendation":""
-                        }
+                Information: %s
                 
-                        Information:
+                {
+                  "subject":"",
+                  "findings":"",
+                  "evidence":"",
+                  "conclusion":"",
+                  "recommendation":""
+                }
                 
-                        %s
+                Requirements:
+                - subject must identify the researched entity.
+                - findings must summarize important discoveries.
+                - evidence must use only provided information.
+                - conclusion must summarize the research result.
+                - recommendation must provide a useful action.
+                - No markdown.
+                - No explanation.
+                - No text outside JSON.
                 """
                 .formatted(data);
     }
