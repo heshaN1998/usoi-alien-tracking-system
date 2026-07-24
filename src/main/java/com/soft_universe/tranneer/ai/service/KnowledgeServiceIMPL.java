@@ -17,7 +17,7 @@ public class KnowledgeServiceIMPL implements KnowledgeService {
     @Override
     public String getUniverseKnowledge() {
         StringBuilder knowledge = new StringBuilder();
-        knowledge.append("PLANETS INFORMATION|n");
+        knowledge.append("PLANETS INFORMATION\n");
 
         planetRepository.findAll().forEach(planet -> {
             knowledge.append(

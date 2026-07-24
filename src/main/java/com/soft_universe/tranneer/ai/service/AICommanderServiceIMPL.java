@@ -62,34 +62,19 @@ public class AICommanderServiceIMPL implements AICommanderService {
         String history = memoryService.getHistory(userId);
         String knowledge = knowledgeService.retrieve(command);
         memoryService.save(userId, "USER", command);
+        String prompt = promptBuilder.build(
+                history,
+                command,
+                knowledge
+        );
 
         String response = chatClient
                 .prompt()
-                .user("""
-                        
-                        Previous Conversation:
-                        
-                        %s
-                        
-                        
-                        Knowledge:
-                        
-                        %s
-                        
-                        
-                        Request:
-                        
-                        %s
-                        
-                        """.formatted(history, knowledge, command))
+                .user(prompt)
                 .tools(secureTools, reasearchTools, predictTools)
                 .call()
                 .content();
-        memoryService.save(
-                userId,
-                "AI",
-                response
-        );
+        memoryService.save(userId, "AI", response);
 
         return new CommanderResponseDTO("COMMANDER DECISION", "RAG ANALYSIS WITH TOOLS WITH MEMORY", response);
     }

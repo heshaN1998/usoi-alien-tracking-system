@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CommanderPromptBuilder {
-    public String build(String command, String knowledge) {
+    public String build(String history,String command, String knowledge) {
         return """
                 You are AlienBase AI Commander.
                 
@@ -24,6 +24,10 @@ public class CommanderPromptBuilder {
                 4. Reports
                 5. Recommendations
                 
+                Previous Conversation:
+                
+                %s
+                
                 Knowledge:
                 
                 %s
@@ -38,6 +42,6 @@ public class CommanderPromptBuilder {
                 Action:
                 Result:
                 """
-                .formatted(knowledge, command);
+                .formatted(history,knowledge, command);
     }
 }

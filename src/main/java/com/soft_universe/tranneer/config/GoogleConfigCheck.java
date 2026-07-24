@@ -1,4 +1,4 @@
-package com.soft_universe.tranneer;
+package com.soft_universe.tranneer.config;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,14 +16,4 @@ public class GoogleConfigCheck {
     @Value("${spring.ai.google.genai.api-key:NOT_FOUND}")
     private String apiKey;
 
-
-    @PostConstruct
-    public void check() {
-        System.out.println("========== GOOGLE GENAI CONFIG ==========");
-        System.out.println("Project ID = " + projectId);
-        System.out.println("Location  = " + location);
-        System.out.println("API Key   = " +
-                (apiKey.equals("NOT_FOUND") ? "NOT FOUND" : "FOUND"));
-        System.out.println("=========================================");
-    }
 }
