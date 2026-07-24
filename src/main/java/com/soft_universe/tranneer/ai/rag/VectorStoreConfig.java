@@ -11,6 +11,6 @@ public class VectorStoreConfig {
 
     @Bean
     public PgVectorStore vectorStore(JdbcTemplate jdbcTemplate, EmbeddingModel embeddingModel) {
-        return PgVectorStore.builder(jdbcTemplate, embeddingModel).dimensions(768).build();
+        return PgVectorStore.builder(jdbcTemplate, embeddingModel).dimensions(3072).build();
     }
 }
