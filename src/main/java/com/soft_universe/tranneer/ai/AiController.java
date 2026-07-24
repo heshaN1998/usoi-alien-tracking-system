@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api01/ai")
+@RequestMapping("/api/ai")
 public class AiController {
     private final AiService aiService;
     public AiController(AiService aiService){

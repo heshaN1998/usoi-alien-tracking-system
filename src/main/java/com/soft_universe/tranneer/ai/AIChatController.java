@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api01/chat")
+@RequestMapping("/api/ai/chat")
 public class AIChatController {
     private final AIChatService aiChatService;
     private final CurrentUserService currentUserService;
